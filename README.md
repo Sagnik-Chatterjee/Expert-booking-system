@@ -43,36 +43,91 @@ JWT Authentication
 bcryptjs
 Socket.io
 Express Validator
-Project Structure
-Expert-Booking-System/
+# Project Structure
+
+```bash
+Expert-Booking-System
 │
-├── frontend/
-│   ├── src/
-│   │   ├── api/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   ├── socket/
-│   │   └── App.jsx
+├── backend
+│   │
+│   ├── src
+│   │   │
+│   │   ├── controllers
+│   │   │   ├── auth.controller.js
+│   │   │   ├── booking.controller.js
+│   │   │   └── expert.controller.js
+│   │   │
+│   │   ├── db
+│   │   │   └── db.js
+│   │   │
+│   │   ├── middlewares
+│   │   │   ├── auth.middleware.js
+│   │   │   ├── error.middleware.js
+│   │   │   └── validate.middleware.js
+│   │   │
+│   │   ├── models
+│   │   │   ├── booking.model.js
+│   │   │   ├── expert.model.js
+│   │   │   └── user.model.js
+│   │   │
+│   │   ├── routes
+│   │   │   ├── auth.routes.js
+│   │   │   ├── booking.routes.js
+│   │   │   └── expert.routes.js
+│   │   │
+│   │   ├── utils
+│   │   │   └── generateToken.js
+│   │   │
+│   │   └── app.js
 │   │
 │   ├── .env
-│   ├── package.json
-│   └── vite.config.js
-│
-├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── db/
-│   │   ├── middlewares/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── utils/
-│   │
-│   ├── .env
+│   ├── .gitignore
 │   ├── package.json
 │   └── index.js
 │
-└── README.md
+├── frontend
+│   │
+│   ├── src
+│   │   │
+│   │   ├── api
+│   │   │   └── axios.js
+│   │   │
+│   │   ├── components
+│   │   │   ├── ExpertCard.jsx
+│   │   │   ├── Loader.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Pagination.jsx
+│   │   │   └── ProtectedRoute.jsx
+│   │   │
+│   │   ├── context
+│   │   │   └── AuthContext.jsx
+│   │   │
+│   │   ├── pages
+│   │   │   ├── AddExpert.jsx
+│   │   │   ├── AdminBookings.jsx
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── Booking.jsx
+│   │   │   ├── ExpertDetail.jsx
+│   │   │   ├── Experts.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── MyBookings.jsx
+│   │   │   └── Register.jsx
+│   │   │
+│   │   ├── socket
+│   │   │   └── socket.js
+│   │   │
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   │
+│   ├── .env
+│   ├── .gitignore
+│   ├── package.json
+│   └── vite.config.js
+│
+├── README.md
+└── package-lock.json
+```
 Environment Variables
 Backend .env
 PORT=5000
@@ -109,28 +164,84 @@ npm install
 Run frontend:
 
 npm run dev
-API Endpoints
-Authentication
-Register
-POST /api/auth/register
-Login
-POST /api/auth/login
-Experts
-Get Experts
-GET /api/experts
-Get Expert Details
-GET /api/experts/:id
-Add Expert (Admin)
-POST /api/experts
-Bookings
-Create Booking
-POST /api/bookings
-Get User Bookings
-GET /api/bookings?email=
-Get All Bookings (Admin)
-GET /api/bookings/admin/all
-Update Booking Status
-PATCH /api/bookings/:id/status
+
+
+# API Endpoints
+
+## Authentication Routes
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Login user/admin |
+
+---
+
+## Expert Routes
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/experts` | Get all experts with pagination & filters |
+| GET | `/api/experts/:id` | Get single expert details |
+| POST | `/api/experts` | Add new expert (Admin only) |
+
+---
+
+## Booking Routes
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/bookings` | Create booking |
+| GET | `/api/bookings?email=` | Get bookings by email |
+| GET | `/api/bookings/admin/all` | Get all bookings (Admin only) |
+| PATCH | `/api/bookings/:id/status` | Update booking status |
+
+---
+
+# Booking Status Types
+
+```text
+Pending
+Confirmed
+Completed
+```
+
+---
+
+# Query Parameters
+
+## Get Experts
+
+```http
+GET /api/experts?page=1&limit=10&search=doctor&category=health
+```
+
+### Supported Query Params
+
+| Parameter | Description |
+|-----------|-------------|
+| `page` | Current page number |
+| `limit` | Number of experts per page |
+| `search` | Search experts by name |
+| `category` | Filter experts by category |
+
+---
+
+# Example Booking Request
+
+```json
+{
+  "expert": "expertId",
+  "name": "Sagnik",
+  "email": "sagnik@gmail.com",
+  "phone": "9876543210",
+  "date": "2026-05-10",
+  "timeSlot": "10:00 AM",
+  "notes": "Need career guidance"
+}
+```
+
+
 Real-Time Functionality
 
 Socket.io is used for:
